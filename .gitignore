@@ -19,9 +19,14 @@ target/
 ### JavaScript/vue.js ###
 package-lock.json
 node_modules/
+/frontend/node/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 test/unit/coverage
 test/e2e/reports
 selenium-debug.log
+
+### Generated production JavaScript files ###
+/backend/src/main/resources/public/static/
+/backend/src/main/resources/public/index.html
