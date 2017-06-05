@@ -5,7 +5,7 @@
 
   <parent>
     <artifactId>dashboard-monitor</artifactId>
-    <groupId>de.nava</groupId>
+    <groupId>de.nava.monitor</groupId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>backend</artifactId>
@@ -18,6 +18,12 @@
 	</properties>
 
 	<dependencies>
+    <dependency>
+      <groupId>de.nava.monitor</groupId>
+      <artifactId>frontend</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
@@ -28,22 +34,24 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jdbc</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
+      <optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -64,7 +72,7 @@
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
-            <id>Copy App Content</id>
+            <id>Copy frontend resources into app</id>
             <phase>generate-resources</phase>
             <goals>
               <goal>copy-resources</goal>

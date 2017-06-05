@@ -3,11 +3,18 @@
 Display the most relevant parts of your application infrastructure on one dashboard page.
 UI part is inspired on dashing.
  
-## Backend Setup
+## Back-end Setup
 
-    mvn spring-boot:run
+With the help of the Spring boot developer tools, every class change will lead the embedded 
+Tomcat to restart, so that an application hot-reload leads to quick developer turn around times 
 
-## Front-end Build Setup
+     mvn --projects backend spring-boot:run
+     
+
+## Front-end Setup
+
+For developing on the frontend side, it is very convenient to use the
+webpack integrated hot-reload cycle, before packaging your app up for production:
 
 ``` bash
 # install dependencies
