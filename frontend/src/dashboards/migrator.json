@@ -1,0 +1,20 @@
+{
+  "margin": {
+    "x": 5,
+    "y": 5
+  },
+  "size": {
+    "width": 300,
+    "height": 360
+  },
+  "columns": 1,
+  "widgets": [
+    {
+      "id": "clock",
+      "view": "clock",
+      "sizex": 1,
+      "sizey": 1,
+      "icon": "fa-clock-o"
+    }
+  ]
+}
