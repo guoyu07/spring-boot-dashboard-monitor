@@ -1,22 +1,26 @@
 <template lang="jade">
   .gridster
-    ul
-      li(v-for="(widget, index) in dashboard.widgets", v-bind:data-row="rowAtIndex(index)", v-bind:data-col="index%dashboard.columns+1", v-bind:data-sizex="widget.sizex", v-bind:data-sizey="widget.sizey", :style="widget.style")
+    grid-layout(v-bind:layout="layout", v-bind:col-num="12", v-bind:row-height="90")
+      grid-item(v-for="(widget, index) in dashboard.widgets",
+                v-bind:data-row="rowAtIndex(index)", v-bind:data-col="index%dashboard.columns+1",
+                v-bind:x="widget.x", v-bind:y="widget.y", v-bind:w="widget.w", v-bind:h="widget.h", v-bind:i="widget.id",
+                :style="widget.style")
         component(:is="registerComponent(widget.view)",
-        :id="widget.id",
-        :data="widget.data || {}",
-        :config="widget.config",
-        class="widget")
+                  :id="widget.id",
+                  :data="widget.data || {}",
+                  :config="widget.config",
+                  class="widget")
         i(class="fa icon-background",
-        :class="[widget.icon]",
-        :style="{ 'margin-top': dashboard.size.height/3.4 + 'px' }",
-        v-if="widget['icon']",)
+          :class="[widget.icon]",
+          :style="{ 'margin-top': dashboard.size.height/3.4 + 'px' }",
+          v-if="widget['icon']",)
 </template>
 
 <script>
   import Vue from 'vue'
+  import VueGridLayout from 'vue-grid-layout'
 
-  var shortenedNumber = function (value) {
+  let shortenedNumber = function (value) {
     if (isNaN(value)) {
       return value
     }
@@ -33,24 +37,36 @@
   }
   Vue.filter('shortenedNumber', shortenedNumber)
 
+  const testLayout = [
+    {'x': 0, 'y': 0, 'w': 2, 'h': 2, 'i': '0'}
+  ]
+
   export default {
+    components: {
+      'GridLayout': VueGridLayout.GridLayout,
+      'GridItem': VueGridLayout.GridItem
+    },
+    data () {
+      return {
+        layout: testLayout
+      }
+    },
     computed: {
       dashboardName: function () {
-        var path = window.location.pathname
-        return path.substr(path.lastIndexOf('/') + 1)
+        let path = window.location.hash
+        return path.substr(path.lastIndexOf('#') + 1)
       },
       dashboard: function () {
-        var dashboard = require('./dashboards/' + this.dashboardName + '.json')
-        for (var i = 0; i < dashboard.widgets.length; i++) {
-          var widget = dashboard.widgets[i]
+        let dashboard = require('./dashboards/' + this.dashboardName + '.json')
+        for (let widget of dashboard.widgets) {
           if (!widget.config) {
             widget.config = {}
           }
           if (!widget.config.width) {
-            widget.config.width = widget.sizex * dashboard.size.width - 12 * 2
+            widget.config.width = widget.x * dashboard.size.width - 12 * 2
           }
           if (!widget.config.height) {
-            widget.config.height = widget.sizey * dashboard.size.height - 12 * 2 - 42 - 12 - 21 * 2 - 42
+            widget.config.height = widget.y * dashboard.size.height - 12 * 2 - 42 - 12 - 21 * 2 - 42
           }
         }
         return dashboard
@@ -64,7 +80,7 @@
       //   max_cols: this.dashboard.columns
       // })
 
-      var closeTimer
+      let closeTimer
       // this.listenEvents()
       console.log('initial listenEvents')
       window.onfocus = () => {
@@ -92,15 +108,14 @@
         if (Vue.component(widgetView)) {
           return widgetView
         }
-        var component = require('./widgets/' + widgetView + '.vue')
+        let component = require('./widgets/' + widgetView + '.vue')
         Vue.component(widgetView, component)
         return widgetView
       },
       rowAtIndex: function (index) {
-        var x = 0
-        for (var i = 0; i < index; i++) {
-          var widget = this.dashboard.widgets[i]
-          x += parseInt(widget.sizex)
+        let x = 0
+        for (let widget of this.dashboard.widgets) {
+          x += parseInt(widget.x)
         }
         return Math.floor(x / this.dashboard.columns) + 1
       }
@@ -195,15 +210,12 @@
     width 1900px
     margin 0 auto
 
-  .gridster ul
-    list-style none
-
-  .gridster .gs-w
+  .gridster .vue-grid-item
     background widget-background-color
     display table
     cursor pointer
 
-  .gridster .gs-w .widget
+  .gridster .vue-grid-item .widget
     padding 12px 12px
     text-align center
     width 100%

@@ -12,8 +12,19 @@
     {
       "id": "clock",
       "view": "clock",
-      "sizex": 1,
-      "sizey": 1,
+      "x": 1,
+      "y": 1,
+      "w": 1,
+      "h": 1,
+      "icon": "fa-clock-o"
+    },
+    {
+      "id": "clock2",
+      "view": "clock",
+      "x": 5,
+      "y": 1,
+      "w": 1,
+      "h": 1,
       "icon": "fa-clock-o"
     }
   ]
